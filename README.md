@@ -11,6 +11,13 @@ A client-side HTML payload composer for red team operations and security researc
 - **Live Preview** — Iframe preview of generated output with source view and build log
 - **Zero Dependencies** — Pure vanilla JS, no build step, no server, runs entirely in-browser
 
+## Bypass Results
+
+| Outlook | Gmail |
+|---------|-------|
+| ![Outlook bypass](images/outlook-bypass.png) | ![Gmail bypass](images/gmail-bypass.png) |
+| ✅ Not detected | ✅ Not detected |
+
 ## Quick Start
 
 ```bash
