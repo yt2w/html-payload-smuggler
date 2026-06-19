@@ -1,4 +1,4 @@
-# Payload Composer
+# html-payload-smuggler
 
 A client-side HTML payload composer for red team operations and security research. Embeds arbitrary binary files into self-contained HTML pages that trigger downloads via blob URLs — no server required.
 
@@ -22,7 +22,7 @@ A client-side HTML payload composer for red team operations and security researc
 
 ```bash
 git clone https://github.com/yt2w/html-payload-smuggler.git
-cd payload-composer
+cd html-payload-smuggler
 # Open index.html in any modern browser — that's it
 ```
 
