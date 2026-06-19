@@ -21,7 +21,7 @@ A client-side HTML payload composer for red team operations and security researc
 ## Quick Start
 
 ```bash
-git clone https://github.com/youruser/payload-composer.git
+git clone https://github.com/yt2w/html-payload-smuggler.git
 cd payload-composer
 # Open index.html in any modern browser — that's it
 ```
